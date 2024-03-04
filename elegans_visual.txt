@@ -1,5 +1,6 @@
 graphics opengl_better
 background_color 1 1 1
+
 light 0 position -50 50 0
 light 0 diffuse 1 1 1
 light 0 ambient 0.05 0.05 0.05
@@ -12,25 +13,28 @@ boundaries 1 -15 15 r
 boundaries 2 -15 15 r
 
 time_start 0
-time_stop 300
-time_step 0.02
+time_stop 10000
+time_step 0.1
 
-species PGL3 PGL3-mRNA PGL3p MEG3 MEG3-mRNA MEG3p MEX5 MEX5-mRNA PLK1 PLK1-PGL3 PLK1-MEG3 Pgran mRNA Pase
+species PGL3 PGL3-mRNA PGL3p MEG3 MEG3-mRNA MEG3p MEX5 MEX5-mRNA Pgran mRNA
 
 
-color PGL3 blue
-color MEG3 red
-color MEX5 orange
-color PGL3p green
-color PLK1 pink
+color PGL3 lightblue
+color MEG3 lightred
+#color MEX5 orange
+color PGL3p darkgreen
+color MEG3p yellow
 color Pgran 0 0.1 0
-color mRNA 0 0.3 0
-color PLK1-PGL3 1 0.8 1
+#color mRNA black
+color PGL3-mRNA darkblue
+color MEG3-mRNA darkred
 
 difc * 1
-difc ???3 5
-difc MEG3-mRNA 0.11
-display_size * 0.5
+difc ???3* 5
+difc *-mRNA 0.11
+display_size * 0.3
+display_size *-mRNA 1.5
+display_size mRNA 0 #0.3
 display_size Pgran 2
 
 
@@ -47,14 +51,12 @@ end_surface
 start_surface anteriordivider
     polygon both edge
     action all both transmit
-    action Pase both reflect
-    rate MEX5 fsoln bsoln 0.1 #increasing this rate increases permeability towards posterior end.
-    rate MEX5 bsoln fsoln 0.11 #increasing this rate increases permeability towards the anterior end.
+    action MEX5 both reflect
     color both black 1
     panel disk 5 0 0 15 1 0 0 20
 end_surface
 
-read_file MEX5_grad.txt
+#read_file MEX5_grad.txt
 
 start_compartment cytoplasm
     surface cellmembrane
@@ -73,15 +75,26 @@ start_compartment posterior
     point 0 0 0
 end_compartment
 
-compartment_mol 127 PGL3 cytoplasm
-compartment_mol 127 MEG3 cytoplasm
-compartment_mol 100 PLK1 cytoplasm
-compartment_mol 2 Pgran cytoplasm
-compartment_mol 50 Pase posterior
+compartment_mol 1000 PGL3 cytoplasm
+compartment_mol 1000 MEG3 cytoplasm
+#compartment_mol 2 Pgran cytoplasm
+compartment_mol 5000 mRNA cytoplasm
 
-reaction ppf PGL3 + PLK1 -> PLK1-PGL3 1
-reaction ppr PLK1-PGL3 -> PLK1 + PGL3 0.01
-product_placement ppr pgemmax 0.2
-reaction ppp PLK1-PGL3 -> PGL3p + PLK1 0.02
+reaction compartment=anterior pglp PGL3 -> PGL3p 1
+reaction compartment=anterior meg3p MEG3 -> MEG3p 1
+reaction compartment=posterior pglpase PGL3p -> PGL3 1
+reaction compartment=posterior meg3pase MEG3p -> MEG3 1
+
+reaction pgl3rna PGL3 + mRNA -> PGL3-mRNA 0.02
+reaction pgl3rna-r PGL3-mRNA -> PGL3 + mRNA 0.64
+product_placement pgl3rna-r pgemmax 0.2
+
+reaction meg3rna MEG3 + mRNA -> MEG3-mRNA 0.02
+reaction meg3rna-r MEG3-mRNA -> MEG3 + mRNA 0.64
+product_placement meg3rna-r pgemmax 0.2
+
+#28274.33 total cell volume
+#10602.875 posterior
+#37.5% volume
 
 end_file

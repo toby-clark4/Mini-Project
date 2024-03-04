@@ -1,0 +1,100 @@
+dim 3
+boundaries 0 -15 40 r
+boundaries 1 -15 15 r
+boundaries 2 -15 15 r
+
+time_start 0
+time_stop 3000
+time_step 0.5
+
+species PGL3 PGL3-mRNA PGL3p MEG3 MEG3-mRNA MEG3p mRNA #Pgran MEX5 MEX5-mRNA
+
+difc * 1
+difc ???3* 5
+difc *-mRNA 0.11
+
+start_surface cellmembrane
+    action all both reflect
+    color both purple 1
+    polygon both edge
+    panel hemi 0 0 0 15 1 0 0 20 8
+    panel hemi 20 0 0 15 -1 0 0 20 8
+    panel cyl 0 0 0 20 0 0 15 20 8
+end_surface
+
+
+start_surface anteriordivider
+    polygon both edge
+    action all both transmit
+    #action MEX5 both reflect
+    color both black 1
+    panel disk 5 0 0 15 1 0 0 20
+end_surface
+
+read_file mex5_grad.txt
+
+start_compartment cytoplasm
+    surface cellmembrane
+    point 0 0 0
+end_compartment
+
+start_compartment anterior
+    surface cellmembrane
+    surface anteriordivider
+    point 10 0 0
+end_compartment
+
+start_compartment posterior
+    surface cellmembrane
+    surface anteriordivider
+    point 0 0 0
+end_compartment
+
+compartment_mol 1000 PGL3 cytoplasm #
+compartment_mol 1000 MEG3 cytoplasm #165235
+#compartment_mol 2 Pgran cytoplasm
+compartment_mol 50000 mRNA cytoplasm #2129392
+
+reaction compartment=comp1 plk1_1 *3 -> *3p 0.189
+reaction compartment=comp2 plk1_2 *3 -> *3p 0.198
+reaction compartment=comp3 plk1_3 *3 -> *3p 0.207
+reaction compartment=comp4 plk1_4 *3 -> *3p 0.216
+reaction compartment=comp5 plk1_5 *3 -> *3p 0.225
+reaction compartment=comp6 plk1_6 *3 -> *3p 0.234
+reaction compartment=comp7 plk1_7 *3 -> *3p 0.243
+reaction compartment=comp8 plk1_8 *3 -> *3p 0.252
+
+/*
+reaction compartment=comp1 plk1_1 *3 -> *3p 0.0019
+reaction compartment=comp2 plk1_2 *3 -> *3p 0.008
+reaction compartment=comp3 plk1_3 *3 -> *3p 0.07
+reaction compartment=comp4 plk1_4 *3 -> *3p 0.16
+reaction compartment=comp5 plk1_5 *3 -> *3p 0.25
+reaction compartment=comp6 plk1_6 *3 -> *3p 0.34
+reaction compartment=comp7 plk1_7 *3 -> *3p 0.43
+reaction compartment=comp8 plk1_8 *3 -> *3p 0.52
+*/
+
+reaction compartment=comp1 pase_1 *3p -> *3 0.294
+reaction compartment=comp2 pase_2 *3p -> *3 0.273
+reaction compartment=comp3 pase_3 *3p -> *3 0.252
+reaction compartment=comp4 pase_4 *3p -> *3 0.231
+reaction compartment=comp5 pase_5 *3p -> *3 0.210
+reaction compartment=comp6 pase_6 *3p -> *3 0.189
+reaction compartment=comp7 pase_7 *3p -> *3 0.168
+reaction compartment=comp8 pase_8 *3p -> *3 0.147
+
+#kca/km*enz
+
+reaction megpglrna *3 + mRNA -> *3-mRNA 0.16605 
+reaction megpglrna-r *3-mRNA -> *3 + mRNA 5.314
+product_placement megpglrna-r pgemmax 0.2
+
+#28274.33 total cell volume
+#10602.875 posterior
+#37.5% volume
+#0.252 rate max, 0.189 min
+output_files posterior.csv anterior.csv
+cmd i 0 3000 1 molcountincmpt posterior posterior.csv
+cmd i 0 3000 1 molcountincmpt anterior anterior.csv
+end_file
