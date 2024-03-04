@@ -1,0 +1,87 @@
+graphics opengl_better
+background_color 1 1 1
+light 0 position -50 50 0
+light 0 diffuse 1 1 1
+light 0 ambient 0.05 0.05 0.05
+light 0 specular 1 1 1
+#frame_thickness 0
+
+dim 3
+boundaries 0 -15 40 r
+boundaries 1 -15 15 r
+boundaries 2 -15 15 r
+
+time_start 0
+time_stop 300
+time_step 0.02
+
+species PGL3 PGL3-mRNA PGL3p MEG3 MEG3-mRNA MEG3p MEX5 MEX5-mRNA PLK1 PLK1-PGL3 PLK1-MEG3 Pgran mRNA Pase
+
+
+color PGL3 blue
+color MEG3 red
+color MEX5 orange
+color PGL3p green
+color PLK1 pink
+color Pgran 0 0.1 0
+color mRNA 0 0.3 0
+color PLK1-PGL3 1 0.8 1
+
+difc * 1
+difc ???3 5
+difc MEG3-mRNA 0.11
+display_size * 0.5
+display_size Pgran 2
+
+
+start_surface cellmembrane
+    action all both reflect
+    color both purple 1
+    polygon both edge
+    panel hemi 0 0 0 15 1 0 0 20 8
+    panel hemi 20 0 0 15 -1 0 0 20 8
+    panel cyl 0 0 0 20 0 0 15 20 8
+end_surface
+
+
+start_surface anteriordivider
+    polygon both edge
+    action all both transmit
+    action Pase both reflect
+    rate MEX5 fsoln bsoln 0.1 #increasing this rate increases permeability towards posterior end.
+    rate MEX5 bsoln fsoln 0.11 #increasing this rate increases permeability towards the anterior end.
+    color both black 1
+    panel disk 5 0 0 15 1 0 0 20
+end_surface
+
+read_file MEX5_grad.txt
+
+start_compartment cytoplasm
+    surface cellmembrane
+    point 0 0 0
+end_compartment
+
+start_compartment anterior
+    surface cellmembrane
+    surface anteriordivider
+    point 10 0 0
+end_compartment
+
+start_compartment posterior
+    surface cellmembrane
+    surface anteriordivider
+    point 0 0 0
+end_compartment
+
+compartment_mol 127 PGL3 cytoplasm
+compartment_mol 127 MEG3 cytoplasm
+compartment_mol 100 PLK1 cytoplasm
+compartment_mol 2 Pgran cytoplasm
+compartment_mol 50 Pase posterior
+
+reaction ppf PGL3 + PLK1 -> PLK1-PGL3 1
+reaction ppr PLK1-PGL3 -> PLK1 + PGL3 0.01
+product_placement ppr pgemmax 0.2
+reaction ppp PLK1-PGL3 -> PGL3p + PLK1 0.02
+
+end_file

@@ -1,0 +1,120 @@
+
+start_surface grad1
+    polygon both edge
+    action all both transmit
+    rate MEX5 fsoln bsoln 0.1 #increasing this rate increases permeability towards posterior end.
+    rate MEX5 bsoln fsoln 0.11 #increasing this rate increases permeability towards the anterior end.
+    color both black 0
+    panel disk -5 0 0 15 1 0 0 20
+end_surface
+
+start_surface grad2
+    polygon both edge
+    action all both transmit
+    rate MEX5 fsoln bsoln 0.1 #increasing this rate increases permeability towards posterior end.
+    rate MEX5 bsoln fsoln 0.11 #increasing this rate increases permeability towards the anterior end.
+    color both black 0
+    panel disk 0 0 0 15 1 0 0 20
+end_surface
+
+start_surface grad4
+    polygon both edge
+    action all both transmit
+    rate MEX5 fsoln bsoln 0.1 #increasing this rate increases permeability towards posterior end.
+    rate MEX5 bsoln fsoln 0.11 #increasing this rate increases permeability towards the anterior end.
+    color both black 0
+    panel disk 10 0 0 15 1 0 0 20
+end_surface
+
+start_surface grad5
+    polygon both edge
+    action all both transmit
+    rate MEX5 fsoln bsoln 0.1 #increasing this rate increases permeability towards posterior end.
+    rate MEX5 bsoln fsoln 0.11 #increasing this rate increases permeability towards the anterior end.
+    color both black 0
+    panel disk 15 0 0 15 1 0 0 20
+end_surface
+
+start_surface grad6
+    polygon both edge
+    action all both transmit
+    rate MEX5 fsoln bsoln 0.1 #increasing this rate increases permeability towards posterior end.
+    rate MEX5 bsoln fsoln 0.11 #increasing this rate increases permeability towards the anterior end.
+    color both black 0
+    panel disk 20 0 0 15 1 0 0 20
+end_surface
+
+start_surface grad7
+    polygon both edge
+    action all both transmit
+    rate MEX5 fsoln bsoln 0.1 #increasing this rate increases permeability towards posterior end.
+    rate MEX5 bsoln fsoln 0.11 #increasing this rate increases permeability towards the anterior end.
+    color both black 0
+    panel disk 25 0 0 15 1 0 0 20
+end_surface
+
+
+start_compartment comp1
+    surface cellmembrane
+    surface grad1
+    point -10 0 0
+end_compartment
+
+start_compartment comp2
+    surface grad2
+    surface grad1
+    surface cellmembrane
+    point -2 0 0
+end_compartment
+
+start_compartment comp3
+    surface grad2
+    surface anteriordivider
+    surface cellmembrane
+    point 2 0 0
+end_compartment
+
+start_compartment comp4
+    surface anteriordivider
+    surface grad4
+    surface cellmembrane
+    point 7 0 0
+end_compartment
+
+start_compartment comp5
+    surface grad4
+    surface grad5
+    surface cellmembrane
+    point 13 0 0
+end_compartment
+
+start_compartment comp6
+    surface grad5
+    surface grad6
+    surface cellmembrane
+    point 17 0 0
+end_compartment
+
+start_compartment comp7
+    surface grad6
+    surface grad7
+    surface cellmembrane
+    point 22 0 0
+end_compartment
+
+start_compartment comp8
+    surface grad7
+    surface cellmembrane
+    point 30 0 0
+end_compartment
+
+compartment_mol 15 MEX5 comp8
+compartment_mol 15 MEX5 comp7
+compartment_mol 14 MEX5 comp6
+compartment_mol 14 MEX5 comp5
+compartment_mol 12 MEX5 comp4
+compartment_mol 10 MEX5 comp3
+compartment_mol 9 MEX5 comp2
+compartment_mol 8 MEX5 comp1
+
+end_file
