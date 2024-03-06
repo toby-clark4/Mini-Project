@@ -4,8 +4,8 @@ boundaries 1 -15 15 r
 boundaries 2 -15 15 r
 
 time_start 0
-time_stop 10000
-time_step 10
+time_stop 5000
+time_step 5
 
 species PGL3 PGL3-mRNA MEG3 MEG3-mRNA MEG3p mRNA MEX5 MEX5-mRNA #Pgran 
 
@@ -108,6 +108,6 @@ output_files posterior.csv anterior.csv
 output_format csv
 cmd b molcountheader posterior.csv
 cmd b molcountheader anterior.csv
-cmd i 5000 10000 10 molcountincmpt comp1 posterior.csv
-cmd i 5000 10000 10 molcountincmpt comp8 anterior.csv
+cmd i 2500 5000 5 molcountincmpt comp1 posterior.csv
+cmd i 2500 5000 5 molcountincmpt comp8 anterior.csv
 end_file
