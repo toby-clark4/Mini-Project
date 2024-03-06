@@ -1,55 +1,55 @@
 
 start_surface grad1
-    polygon both edge
+    #polygon both edge
     action all both transmit
     action MEX5 both reflect
     action MEX5 both reflect 
-    color both black 0
+    #color both black 0
     panel disk -5 0 0 15 1 0 0 20
 end_surface
 
 start_surface grad2
-    polygon both edge
+    #polygon both edge
     action all both transmit
     action MEX5 both reflect
     action MEX5 both reflect 
-    color both black 0
+    #color both black 0
     panel disk 0 0 0 15 1 0 0 20
 end_surface
 
 start_surface grad4
-    polygon both edge
+    #polygon both edge
     action all both transmit
     action MEX5 both reflect
     action MEX5 both reflect 
-    color both black 0
+    #color both black 0
     panel disk 10 0 0 15 1 0 0 20
 end_surface
 
 start_surface grad5
-    polygon both edge
+    #polygon both edge
     action all both transmit
     action MEX5 both reflect
     action MEX5 both reflect 
-    color both black 0
+    #color both black 0
     panel disk 15 0 0 15 1 0 0 20
 end_surface
 
 start_surface grad6
-    polygon both edge
+    #polygon both edge
     action all both transmit
     action MEX5 both reflect
     action MEX5 both reflect 
-    color both black 0
+    #color both black 0
     panel disk 20 0 0 15 1 0 0 20
 end_surface
 
 start_surface grad7
-    polygon both edge
+    #polygon both edge
     action all both transmit
     action MEX5 both reflect
     action MEX5 both reflect 
-    color both black 0
+    #color both black 0
     panel disk 25 0 0 15 1 0 0 20
 end_surface
 

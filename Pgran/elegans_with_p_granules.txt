@@ -15,6 +15,7 @@ difc ???3 5
 difc MEX5 5
 difc *-mRNA 0.11
 difc Pgran 0.02
+difc pre-Pgran 0.02
 
 start_surface cellmembrane
     action all both reflect
@@ -67,6 +68,15 @@ reaction compartment=comp6 plk1_6 MEG3 -> MEG3p 0.234
 reaction compartment=comp7 plk1_7 MEG3 -> MEG3p 0.243
 reaction compartment=comp8 plk1_8 MEG3 -> MEG3p 0.252
 
+reaction compartment=comp1 plk1_rna1 MEG3-mRNA -> MEG3p + mRNA 0.189
+reaction compartment=comp2 plk1_rna2 MEG3-mRNA -> MEG3p + mRNA 0.198
+reaction compartment=comp3 plk1_rna3 MEG3-mRNA -> MEG3p + mRNA 0.207
+reaction compartment=comp4 plk1_rna4 MEG3-mRNA -> MEG3p + mRNA 0.216
+reaction compartment=comp5 plk1_rna5 MEG3-mRNA -> MEG3p + mRNA 0.225
+reaction compartment=comp6 plk1_rna6 MEG3-mRNA -> MEG3p + mRNA 0.234
+reaction compartment=comp7 plk1_rna7 MEG3-mRNA -> MEG3p + mRNA 0.243
+reaction compartment=comp8 plk1_rna8 MEG3-mRNA -> MEG3p + mRNA 0.252
+
 reaction compartment=comp1 pase_1 MEG3p -> MEG3 0.294
 reaction compartment=comp2 pase_2 MEG3p -> MEG3 0.273
 reaction compartment=comp3 pase_3 MEG3p -> MEG3 0.252
@@ -77,36 +87,38 @@ reaction compartment=comp7 pase_7 MEG3p -> MEG3 0.168
 reaction compartment=comp8 pase_8 MEG3p -> MEG3 0.147
 
 
-reaction pglrna PGL3 + mRNA -> PGL3-mRNA 0.16605
+reaction pglrna PGL3 + mRNA -> PGL3-mRNA 0.83025 #0.16605
 reaction pglrna-r PGL3-mRNA -> PGL3 + mRNA 38.19
 product_placement pglrna-r pgemmax 0.2
 
-reaction megrna MEG3 + mRNA -> MEG3-mRNA 0.16605
+reaction megrna MEG3 + mRNA -> MEG3-mRNA 0.83025 #0.16605
 reaction megrna-r MEG3-mRNA -> MEG3 + mRNA 5.314
 product_placement megrna-r pgemmax 0.2
 
+/*
 reaction mexrna MEX5 + mRNA -> MEX5-mRNA 1.6605
 reaction mexrna-r MEX5-mRNA -> MEX5 + mRNA 1.6605
 product_placement mexrna-r pgemmax 0.2
-
+*/
 reaction compartment=anterior pre-pgran_ant_meg MEG3-mRNA + MEG3 -> pre-Pgran 1
 reaction compartment=posterior pre-pgran_post_meg MEG3-mRNA + MEG3 -> pre-Pgran 1
-reaction pre-pgran_meg-r Pgran -> MEG3-mRNA + MEG3 0.01
+reaction pre-pgran_meg-r pre-Pgran -> MEG3-mRNA + MEG3 0.01
 product_placement pre-pgran_meg-r pgemmax 0.2
 
 reaction compartment=anterior pre-pgran_ant_pgl PGL3-mRNA + PGL3 -> pre-Pgran 1
 reaction compartment=posterior pre-pgran_post_pgl PGL3-mRNA + PGL3 -> pre-Pgran 1
-reaction pre-pgran_pgl-r Pgran -> PGL3-mRNA + PGL3 0.2
+reaction pre-pgran_pgl-r pre-Pgran -> PGL3-mRNA + PGL3 0.2
 product_placement pre-pgran_pgl-r pgemmax 0.2
 
 reaction pgran pre-Pgran + MEG3 <-> Pgran 20 0.1
-reaction pgran2 pre-Pgran + PGL3 <-> Pgran 0.1 0.1
+reaction pgran2 pre-Pgran + MEG3p <-> Pgran 20 0.1
+reaction pgran3 pre-Pgran + PGL3 <-> Pgran 0.1 0.1
 
 reaction pgran_in_meg MEG3* + Pgran -> Pgran 10
 reaction pgran_in_pgl PGL3 + Pgran -> Pgran 10
 
-reaction compartment=posterior pgran_out_meg Pgran -> Pgran + MEG3 0.06
-reaction compartment=anterior pgran_out_megp Pgran -> Pgran + MEG3p 0.01
+reaction pgran_out_meg Pgran -> Pgran + MEG3 0.25
+reaction pgran_out_megp Pgran -> Pgran + MEG3p 0.15
 reaction pgran_out_pgl Pgran -> Pgran + PGL3 5
 product_placement pgran_out_meg pgemmax 0.2
 product_placement pgran_out_megp pgemmax 0.2
@@ -118,23 +130,30 @@ output_files posterior.csv anterior.csv stdout
 output_format csv
 cmd A diagnostics all stdout
 
-
+/*
 #cmd e ifincmpt MEG3-mRNA > 5 posterior setreactionratemolcount pre-pgran_post_meg 1 1 MEG3
-cmd e ifincmpt MEG3-mRNA > 5 posterior setreactionratemolcount pre-pgran_post_meg 50
+cmd e ifincmpt MEG3-mRNA > 4 posterior setreactionratemolcount pre-pgran_post_meg 50
 cmd e ifincmpt MEG3-mRNA < 6 posterior setreactionratemolcount pre-pgran_post_meg 0
 #cmd e ifincmpt MEG3-mRNA > 10 anterior setreactionratemolcount pre-pgran_ant_meg 1 0.6 MEG3
-cmd e ifincmpt MEG3-mRNA > 10 anterior setreactionratemolcount pre-pgran_ant_meg 30
-cmd e ifincmpt MEG3-mRNA < 11 anterior setreactionratemolcount pre-pgran_ant_meg 0
+cmd e ifincmpt MEG3-mRNA > 9 anterior setreactionratemolcount pre-pgran_ant_meg 20
+cmd e ifincmpt MEG3-mRNA < 10 anterior setreactionratemolcount pre-pgran_ant_meg 0
+*/
+#cmd e ifincmpt MEG3-mRNA > 5 posterior setreactionratemolcount pre-pgran_post_meg 1 1 MEG3
+cmd e ifincmpt MEG3-mRNA > 15 posterior setreactionratemolcount pre-pgran_post_meg 50
+cmd e ifincmpt MEG3-mRNA < 16 posterior setreactionratemolcount pre-pgran_post_meg 0
+#cmd e ifincmpt MEG3-mRNA > 40 anterior setreactionratemolcount pre-pgran_ant_meg 1 0.6 MEG3
+cmd e ifincmpt MEG3-mRNA > 26 anterior setreactionratemolcount pre-pgran_ant_meg 20
+cmd e ifincmpt MEG3-mRNA < 27 anterior setreactionratemolcount pre-pgran_ant_meg 0
 
 #cmd e ifincmpt PGL3-mRNA > 5 posterior setreactionratemolcount pre-pgran_post_pgl 1 1 MEG3
-cmd e ifincmpt PGL3-mRNA > 170 posterior setreactionratemolcount pre-pgran_post_pgl 0.1
-cmd e ifincmpt PGL3-mRNA < 171 posterior setreactionratemolcount pre-pgran_post_pgl 0
-#cmd e ifincmpt PGL3-mRNA > 240 anterior setreactionratemolcount pre-pgran_ant_pgl 1 0.6 MEG3
-cmd e ifincmpt PGL3-mRNA > 260 anterior setreactionratemolcount pre-pgran_ant_pgl 0.1
-cmd e ifincmpt PGL3-mRNA < 261 anterior setreactionratemolcount pre-pgran_ant_pgl 0
+cmd e ifincmpt PGL3-mRNA > 850 posterior setreactionratemolcount pre-pgran_post_pgl 0.1
+cmd e ifincmpt PGL3-mRNA < 851 posterior setreactionratemolcount pre-pgran_post_pgl 0
+#cmd e ifincmpt PGL3-mRNA > 1200 anterior setreactionratemolcount pre-pgran_ant_pgl 1 0.6 MEG3
+cmd e ifincmpt PGL3-mRNA > 1300 anterior setreactionratemolcount pre-pgran_ant_pgl 0.1
+cmd e ifincmpt PGL3-mRNA < 1301 anterior setreactionratemolcount pre-pgran_ant_pgl 0
 
 cmd b molcountheader posterior.csv
 cmd b molcountheader anterior.csv
-cmd i 0 1000 0.5 molcountincmpt posterior posterior.csv
-cmd i 0 1000 0.5 molcountincmpt anterior anterior.csv
+cmd i 0 3000 0.5 molcountincmpt posterior posterior.csv
+cmd i 0 3000 0.5 molcountincmpt anterior anterior.csv
 end_file
