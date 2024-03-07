@@ -5,7 +5,7 @@ light 0 position -50 50 0
 light 0 diffuse 1 1 1
 light 0 ambient 0.05 0.05 0.05
 light 0 specular 1 1 1
-#frame_thickness 0
+frame_thickness 0
 
 dim 3
 boundaries 0 -15 40 r
@@ -13,29 +13,29 @@ boundaries 1 -15 15 r
 boundaries 2 -15 15 r
 
 time_start 0
-time_stop 10000
-time_step 0.1
+time_stop 1000
+time_step 0.005
 
-species PGL3 PGL3-mRNA PGL3p MEG3 MEG3-mRNA MEG3p MEX5 MEX5-mRNA Pgran mRNA
+species PGL3 PGL3-mRNA MEG3 MEG3-mRNA MEG3p MEX5 MEX5-mRNA pre-pre-Pgran pre-Pgran Pgran mRNA
 
 
-color PGL3 lightblue
-color MEG3 lightred
+color PGL3 darkblue
+color MEG3 darkred
 #color MEX5 orange
-color PGL3p darkgreen
-color MEG3p yellow
-color Pgran 0 0.1 0
-#color mRNA black
-color PGL3-mRNA darkblue
-color MEG3-mRNA darkred
+color MEG3p darkyellow
+color Pgran lime
+color *pre-Pgran darkgreen
+color PGL3-mRNA lightblue
+color MEG3-mRNA lightred
 
 difc * 1
 difc ???3* 5
 difc *-mRNA 0.11
+difc *Pgran 0.02
 display_size * 0.3
-display_size *-mRNA 1.5
+display_size *-Pgran 0.8
 display_size mRNA 0 #0.3
-display_size Pgran 2
+display_size Pgran 3
 
 
 start_surface cellmembrane
@@ -56,7 +56,7 @@ start_surface anteriordivider
     panel disk 5 0 0 15 1 0 0 20
 end_surface
 
-#read_file MEX5_grad.txt
+read_file mex5_grad.txt
 
 start_compartment cytoplasm
     surface cellmembrane
@@ -80,21 +80,76 @@ compartment_mol 1000 MEG3 cytoplasm
 #compartment_mol 2 Pgran cytoplasm
 compartment_mol 5000 mRNA cytoplasm
 
-reaction compartment=anterior pglp PGL3 -> PGL3p 1
-reaction compartment=anterior meg3p MEG3 -> MEG3p 1
-reaction compartment=posterior pglpase PGL3p -> PGL3 1
-reaction compartment=posterior meg3pase MEG3p -> MEG3 1
+reaction compartment=comp1 plk1_1 MEG3 -> MEG3p 0.189
+reaction compartment=comp2 plk1_2 MEG3 -> MEG3p 0.198
+reaction compartment=comp3 plk1_3 MEG3 -> MEG3p 0.207
+reaction compartment=comp4 plk1_4 MEG3 -> MEG3p 0.216
+reaction compartment=comp5 plk1_5 MEG3 -> MEG3p 0.225
+reaction compartment=comp6 plk1_6 MEG3 -> MEG3p 0.234
+reaction compartment=comp7 plk1_7 MEG3 -> MEG3p 0.243
+reaction compartment=comp8 plk1_8 MEG3 -> MEG3p 0.252
 
-reaction pgl3rna PGL3 + mRNA -> PGL3-mRNA 0.02
-reaction pgl3rna-r PGL3-mRNA -> PGL3 + mRNA 0.64
+reaction compartment=comp1 plk1_rna1 MEG3-mRNA -> MEG3p + mRNA 0.189
+reaction compartment=comp2 plk1_rna2 MEG3-mRNA -> MEG3p + mRNA 0.198
+reaction compartment=comp3 plk1_rna3 MEG3-mRNA -> MEG3p + mRNA 0.207
+reaction compartment=comp4 plk1_rna4 MEG3-mRNA -> MEG3p + mRNA 0.216
+reaction compartment=comp5 plk1_rna5 MEG3-mRNA -> MEG3p + mRNA 0.225
+reaction compartment=comp6 plk1_rna6 MEG3-mRNA -> MEG3p + mRNA 0.234
+reaction compartment=comp7 plk1_rna7 MEG3-mRNA -> MEG3p + mRNA 0.243
+reaction compartment=comp8 plk1_rna8 MEG3-mRNA -> MEG3p + mRNA 0.252
+
+reaction compartment=comp1 pase_1 MEG3p -> MEG3 0.294
+reaction compartment=comp2 pase_2 MEG3p -> MEG3 0.273
+reaction compartment=comp3 pase_3 MEG3p -> MEG3 0.252
+reaction compartment=comp4 pase_4 MEG3p -> MEG3 0.231
+reaction compartment=comp5 pase_5 MEG3p -> MEG3 0.210
+reaction compartment=comp6 pase_6 MEG3p -> MEG3 0.189
+reaction compartment=comp7 pase_7 MEG3p -> MEG3 0.168
+reaction compartment=comp8 pase_8 MEG3p -> MEG3 0.147
+
+reaction pgl3rna PGL3 + mRNA -> PGL3-mRNA 1.6605
+reaction pgl3rna-r PGL3-mRNA -> PGL3 + mRNA 30
 product_placement pgl3rna-r pgemmax 0.2
 
-reaction meg3rna MEG3 + mRNA -> MEG3-mRNA 0.02
-reaction meg3rna-r MEG3-mRNA -> MEG3 + mRNA 0.64
+reaction meg3rna MEG3 + mRNA -> MEG3-mRNA 1.6605
+reaction meg3rna-r MEG3-mRNA -> MEG3 + mRNA 5.314
 product_placement meg3rna-r pgemmax 0.2
+
+reaction compartment=anterior pre-pre-pgran_ant_meg MEG3-mRNA + MEG3 -> pre-pre-Pgran 1
+reaction compartment=posterior pre-pre-pgran_post_meg MEG3-mRNA + MEG3 -> pre-pre-Pgran 1
+reaction pre-pre-pgran_meg-r pre-pre-Pgran -> MEG3-mRNA + MEG3 0.01
+product_placement pre-pre-pgran_meg-r pgemmax 0.2
+
+reaction compartment=anterior pre-pre-pgran_ant_pgl PGL3-mRNA + PGL3 -> pre-pre-Pgran 0.1
+reaction compartment=posterior pre-pre-pgran_post_pgl PGL3-mRNA + PGL3 -> pre-pre-Pgran 0.1
+reaction pre-pre-pgran_pgl-r pre-pre-Pgran -> PGL3-mRNA + PGL3 0.2
+product_placement pre-pre-pgran_pgl-r pgemmax 0.2
+
+reaction pre-pgran pre-pre-Pgran + MEG3 -> pre-Pgran 3
+reaction pre-pgran-r pre-Pgran -> MEG3 + pre-pre-Pgran 0.01
+product_placement pre-pgran-r pgemmax 0.2
+
+reaction pgran pre-Pgran + MEG3 <-> Pgran 20 0.05
+reaction pgran2 pre-Pgran + MEG3p <-> Pgran 20 0.05
+reaction pgran3 pre-Pgran + PGL3 <-> Pgran 0.1 0.05
+
+reaction pgran_in_meg MEG3* + Pgran -> Pgran 1
+reaction pgran_in_pgl PGL3 + Pgran -> Pgran 1
+
+reaction pgran_out_meg Pgran -> Pgran + MEG3 0.25
+reaction pgran_out_megp Pgran -> Pgran + MEG3p 0.15
+reaction pgran_out_pgl Pgran -> Pgran + PGL3 0.25
+product_placement pgran_out_meg pgemmax 0.2
+product_placement pgran_out_megp pgemmax 0.2
+product_placement pgran_out_pgl pgemmax 0.2
 
 #28274.33 total cell volume
 #10602.875 posterior
 #37.5% volume
+cmd e ifincmpt MEG3-mRNA > 13 posterior setreactionratemolcount pre-pre-pgran_post_meg 40
+cmd e ifincmpt MEG3-mRNA < 14 posterior setreactionratemolcount pre-pre-pgran_post_meg 0
+#cmd e ifincmpt MEG3-mRNA > 40 anterior setreactionratemolcount pre-pgran_ant_meg 1 0.6 MEG3
+cmd e ifincmpt MEG3-mRNA > 36 anterior setreactionratemolcount pre-pre-pgran_ant_meg 20
+cmd e ifincmpt MEG3-mRNA < 37 anterior setreactionratemolcount pre-pre-pgran_ant_meg 0
 
 end_file

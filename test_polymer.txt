@@ -1,53 +1,57 @@
-# Smoldyn configuration file to test wildcards in reactions
-# This file simulates polymerization, one unit at a time
-# This file uses more complex reaction rules, which is slightly less simple to analyze
-# but correctly accounts for multiplicity in the monomer reaction rate.
+# Crowding test
+# This file shows a combination of excluded volume and reactive interactions.
 
-define FWDRATE	0.1
-define REVRATE	0.1
+graphics opengl_good
+#tiff_name crowdimages/image
+#tiff_iter 5
+#tiff_max 200
 
-# Graphical output
-graphics opengl
-graphic_iter 1000
+dim 2
 
-# System space and time definitions
-dim 3
-boundaries x 0 10 p
-boundaries y 0 10 p
-boundaries y 0 10 p
+boundaries x 0 20 r
+boundaries y 0 20 r
 
 time_start 0
-time_stop 4000
-# polymers are longer here than in polymer_end1, so equilibration takes longer
-time_step 0.01
+time_stop 100
+time_step 0.005
 
-# Molecular species and their properties
-species A
-difc A 1
-color A red
-display_size A 2
+species red green
 
-# Reactions
+difc red(all) 1
+difc green(all) 0.5
 
-reaction_rule rxn1 A + A <-> AA		2*FWDRATE REVRATE
-reaction_rule rxn2 *AA + A <-> *AAA	FWDRATE REVRATE
+display_size red(all) 0.5
+color red(all) red
+display_size green(all) 1
+color green(all) green
 
-expand_rules on-the-fly
+reaction rxn1 red + red -> red + red
+binding_radius rxn1 1
+product_placement rxn1 bounce
 
-# This could also be represented with the sole rule * + A <-> *A.  However, that has
-# the same reaction rate for all reactions.  Here, the monomer association reaction
-# is twice as fast, working on the assumption that its association can happen in either
-# of two ways, which makes it consistent with tbe BioNetGen model of the same name.
+reaction rxn2 red + green -> red + green
+binding_radius rxn2 1.5
+product_placement rxn2 bounce
+reaction_probability rxn2 0.99
 
-# initial molecules
-mol 20000 A u u u
+reaction rxn2a red + green -> green + green
+binding_radius rxn2a 1.5
+product_placement rxn2a bounce 2
+reaction_probability rxn2a 0.1    # this probability is used if rxn2 didn't happen
+# note that the reaction rate has not been calibrated for this reaction
 
-cmd A diagnostics all
+reaction rxn3 green + green -> green + green
+binding_radius rxn3 2
+product_placement rxn3 bounce
 
-output_files polymer_end2out.txt stdout
-output_format csv
-cmd N 1 molcount polymer_end2out.txt
-cmd N 1 molcount stdout
-cmd N 1 molcountheader stdout
+#mol 250 red u u
+mol 5 green u u
+
+text_display time red green
+
+output_files crowding3out.txt
+cmd B gaussiansource red 250 10 5 10 5
+#cmd B pause
+cmd A molcountspace2d red z 0 20  20  0 20  20  0 crowding3out.txt
 
 end_file
