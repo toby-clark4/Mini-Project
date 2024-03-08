@@ -81,14 +81,14 @@ reaction compartment=comp6 plk1_rna6 MEG3-mRNA -> MEG3p + mRNA 0.22
 reaction compartment=comp7 plk1_rna7 MEG3-mRNA -> MEG3p + mRNA 0.22
 reaction compartment=comp8 plk1_rna8 MEG3-mRNA -> MEG3p + mRNA 0.22
 
-reaction compartment=comp1 pase_1 MEG3p -> MEG3 0.44
-reaction compartment=comp2 pase_2 MEG3p -> MEG3 0.44
-reaction compartment=comp3 pase_3 MEG3p -> MEG3 0.44
-reaction compartment=comp4 pase_4 MEG3p -> MEG3 0.44
-reaction compartment=comp5 pase_5 MEG3p -> MEG3 0.44
-reaction compartment=comp6 pase_6 MEG3p -> MEG3 0.44
-reaction compartment=comp7 pase_7 MEG3p -> MEG3 0.44
-reaction compartment=comp8 pase_8 MEG3p -> MEG3 0.44
+reaction compartment=comp1 pase_1 MEG3p -> MEG3 0.33
+reaction compartment=comp2 pase_2 MEG3p -> MEG3 0.33
+reaction compartment=comp3 pase_3 MEG3p -> MEG3 0.33
+reaction compartment=comp4 pase_4 MEG3p -> MEG3 0.33
+reaction compartment=comp5 pase_5 MEG3p -> MEG3 0.33
+reaction compartment=comp6 pase_6 MEG3p -> MEG3 0.33
+reaction compartment=comp7 pase_7 MEG3p -> MEG3 0.33
+reaction compartment=comp8 pase_8 MEG3p -> MEG3 0.33
 
 
 reaction pglrna PGL3 + mRNA -> PGL3-mRNA 0.83025 #0.16605
@@ -129,7 +129,7 @@ product_placement pgran_out_pgl pgemmax 0.2
 
 #remember molcountspace/molcountspace2D
 
-output_files posterior.csv anterior.csv Pgran_spacecount.csv SIMNUM_mex5_ko_megrna_spacecount.csv meg3_spacecount.csv stdout
+output_files intermed_runs/SIMNUM_mex5_ko_posterior.csv intermed_runs/SIMNUM_mex5_ko_anterior.csv Pgran_spacecount.csv intermed_runs/SIMNUM_mex5_ko_megrna_spacecount.csv meg3_spacecount.csv stdout
 cmd A diagnostics all stdout
 output_format csv
 /*
@@ -142,10 +142,10 @@ cmd e ifincmpt MEG3-mRNA < 10 anterior setreactionratemolcount pre-pgran_ant_meg
 */
 #cmd e ifincmpt MEG3-mRNA > 5 posterior setreactionratemolcount pre-pgran_post_meg 1 1 MEG3
 cmd e ifincmpt MEG3-mRNA > 10 posterior setreactionratemolcount pre-pgran_post_meg 50
-cmd e ifincmpt MEG3-mRNA < 11 posterior setreactionratemolcount pre-pgran_post_meg 0
+cmd e ifincmpt MEG3-mRNA < 10 posterior setreactionratemolcount pre-pgran_post_meg 1
 #cmd e ifincmpt MEG3-mRNA > 40 anterior setreactionratemolcount pre-pgran_ant_meg 1 0.6 MEG3
-cmd e ifincmpt MEG3-mRNA > 16 anterior setreactionratemolcount pre-pgran_ant_meg 20 #20
-cmd e ifincmpt MEG3-mRNA < 17 anterior setreactionratemolcount pre-pgran_ant_meg 0 #21
+cmd e ifincmpt MEG3-mRNA > 16 anterior setreactionratemolcount pre-pgran_ant_meg 40 #20
+cmd e ifincmpt MEG3-mRNA < 17 anterior setreactionratemolcount pre-pgran_ant_meg 1 #21
 
 #cmd e ifincmpt PGL3-mRNA > 5 posterior setreactionratemolcount pre-pgran_post_pgl 1 1 MEG3
 cmd e ifincmpt PGL3-mRNA > 850 posterior setreactionratemolcount pre-pgran_post_pgl 0.1
@@ -154,21 +154,12 @@ cmd e ifincmpt PGL3-mRNA < 851 posterior setreactionratemolcount pre-pgran_post_
 cmd e ifincmpt PGL3-mRNA > 1300 anterior setreactionratemolcount pre-pgran_ant_pgl 0.1
 cmd e ifincmpt PGL3-mRNA < 1301 anterior setreactionratemolcount pre-pgran_ant_pgl 0
 
-cmd b molcountheader posterior.csv
-cmd b molcountheader anterior.csv
-cmd i 50 3000 0.5 molcountincmpt posterior posterior.csv
-cmd i 50 3000 0.5 molcountincmpt anterior anterior.csv
-/*
-cmd i 100 3000 0.5 molcountspace2d Pgran y -15 35 15 -15 15 5 -15 15 390 Pgran_spacecount.csv
-cmd i 100 3000 0.5 molcountspace2d MEG3-mRNA y -15 35 15 -15 15 5 -15 15 390 megrna_spacecount.csv
-cmd i 100 3000 0.5 molcountspace2d MEG3 y -15 35 50 -15 15 5 -15 15 390 meg3_spacecount.csv
-*/
-/*
-cmd i 1000 3000 0.5 molcountspace2d Pgran y -1 35 10 -15 15 -15 15 4000 Pgran_spacecount.csv
-cmd i 1000 3000 0.5 molcountspace2d MEG3-mRNA y -15 35 10 -15 15 -15 4000 390 megrna_spacecount.csv
-cmd i 1000 3000 0.5 molcountspace2d MEG3 y -15 35 25 -15 15 -15 15 4000 meg3_spacecount.csv
-*/
+cmd b molcountheader intermed_runs/SIMNUM_mex5_ko_posterior.csv
+cmd b molcountheader intermed_runs/SIMNUM_mex5_ko_anterior.csv
+cmd i 50 3000 0.5 molcountincmpt comp1 intermed_runs/SIMNUM_mex5_ko_posterior.csv
+cmd i 50 3000 0.5 molcountincmpt comp8 intermed_runs/SIMNUM_mex5_ko_anterior.csv
+
 cmd i 100 400 0.5 molcountspace Pgran x -15 35 5 -15 15 -15 15 600 Pgran_spacecount.csv
-cmd i 100 400 0.5 molcountspace MEG3-mRNA x -15 35 5 -15 15 -15 15 600 SIMNUM_mex5_ko_megrna_spacecount.csv
+cmd i 100 400 0.5 molcountspace MEG3-mRNA x -15 35 5 -15 15 -15 15 600 intermed_runs/SIMNUM_mex5_ko_megrna_spacecount.csv
 cmd i 100 400 0.5 molcountspace MEG3 x -15 35 25 -15 15 -15 15 600 meg3_spacecount.csv
 end_file

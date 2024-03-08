@@ -23,21 +23,21 @@ time_step 0.005
 species PGL3 PGL3-mRNA MEG3 MEG3-mRNA MEG3p MEX5 MEX5-mRNA pre-pre-Pgran pre-Pgran Pgran mRNA
 
 
-color PGL3 darkblue
-color MEG3 darkred
+color PGL3 magenta
+color MEG3 darkblue
 #color MEX5 orange
 color MEG3p darkyellow
 color Pgran lime
 color *pre-Pgran darkgreen
-color PGL3-mRNA lightblue
-color MEG3-mRNA lightred
+color PGL3-mRNA pink
+color MEG3-mRNA lightblue
 
 difc * 1
 difc ???3* 5
 difc *-mRNA 0.11
 difc *Pgran 0.02
 display_size * 0.3
-display_size *-Pgran 0.8
+display_size pre-Pgran 0.8
 display_size mRNA 0 #0.3
 display_size Pgran 3
 
