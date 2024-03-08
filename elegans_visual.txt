@@ -12,6 +12,10 @@ boundaries 0 -15 40 r
 boundaries 1 -15 15 r
 boundaries 2 -15 15 r
 
+tiff_name visual_tiffs/tiff
+tiff_iter 10
+tiff_max 1000
+
 time_start 0
 time_stop 1000
 time_step 0.005
@@ -146,6 +150,7 @@ product_placement pgran_out_pgl pgemmax 0.2
 #28274.33 total cell volume
 #10602.875 posterior
 #37.5% volume
+cmd b pause
 cmd e ifincmpt MEG3-mRNA > 13 posterior setreactionratemolcount pre-pre-pgran_post_meg 40
 cmd e ifincmpt MEG3-mRNA < 14 posterior setreactionratemolcount pre-pre-pgran_post_meg 0
 #cmd e ifincmpt MEG3-mRNA > 40 anterior setreactionratemolcount pre-pgran_ant_meg 1 0.6 MEG3

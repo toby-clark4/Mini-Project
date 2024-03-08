@@ -118,7 +118,7 @@ compartment_mol 10 MEX5 comp3
 compartment_mol 9 MEX5 comp2
 compartment_mol 8 MEX5 comp1
 */
-
+#835.038 /um^3 MEX5 conc overall, 0.52 grad
 
 
 end_file

@@ -119,6 +119,7 @@ compartment_mol 1531 MEX5 comp3
 compartment_mol 1311 MEX5 comp2
 compartment_mol 1235 MEX5 comp1
 
+
 #835.038 /um^3 MEX5 conc overall, 0.52 grad
 #185.564 max conc, 92.782 min conc -> 106.0366 -> 119.29 -> 132.55 -> 145.8  -> 159.055 ->
 #172.309 -> 185.564 
